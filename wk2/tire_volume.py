@@ -18,3 +18,10 @@ dia = int(input('Enter the diameter of the wheel in inches (ex 15): ')) #15
 volume = (math.pi * w**2 * ratio * (w * ratio + 2540 * dia)) / 10000000000
 
 print(f'The approximate volume is {volume:.2f} liters')
+
+from datetime import datetime
+timestamp = datetime.now()
+
+with open("volumes.txt", "a") as f:
+    f.write(f'{timestamp:%Y-%m-%d}, {w}, {ratio}, {dia}, {volume:.2f}\n')
+

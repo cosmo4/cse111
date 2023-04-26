@@ -4,7 +4,7 @@ day_of_week = current_date_and_time.weekday()
 
 subtotal = float(input('What is the subtotal: $'))
 
-if subtotal >= 50 and day_of_week == 1 or day_of_week == 2:
+if subtotal >= 50 and day_of_week == 1 or  day_of_week == 2:
     new_subtotal = subtotal *.9
     tax_amount = new_subtotal * .06
     discount = subtotal - new_subtotal
