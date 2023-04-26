@@ -19,9 +19,15 @@ volume = (math.pi * w**2 * ratio * (w * ratio + 2540 * dia)) / 10000000000
 
 print(f'The approximate volume is {volume:.2f} liters')
 
+buy = input("Would you like to buy these tires (y/n): ")
+
+
 from datetime import datetime
 timestamp = datetime.now()
 
 with open("volumes.txt", "a") as f:
-    f.write(f'{timestamp:%Y-%m-%d}, {w}, {ratio}, {dia}, {volume:.2f}\n')
+    f.write(f'{timestamp:%Y-%m-%d}, {w}, {ratio}, {dia}, {volume:.2f}')
+    if buy.lower() == 'y':
+        phone = input("What is your phone number: ")
+        f.write(f', {phone}\n')
 
