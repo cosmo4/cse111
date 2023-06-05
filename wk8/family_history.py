@@ -100,7 +100,9 @@ def print_death_age(people_dict):
             person_key: [name, gender, birth_year, death_year]
     Return: nothing
     """
-    pass
+    for person in people_dict:
+        dictionary = people_dict[person]
+        print(f"{dictionary[NAME_INDEX]}, age at death: {dictionary[DEATH_YEAR_INDEX] - dictionary[BIRTH_YEAR_INDEX]}")
 
 
 def count_genders(people_dict):
@@ -113,7 +115,17 @@ def count_genders(people_dict):
             person_key: [name, gender, birth_year, death_year]
     Return: nothing
     """
-    pass
+    num_females = 0
+    num_males = 0
+    for people in people_dict:
+        person = people_dict[people]
+        if person[GENDER_INDEX] == "F":
+            num_females += 1
+        else:
+            num_males += 1
+    
+    print(f"Number of females: {num_females}\nNumber of males: {num_males}")
+
 
 
 def print_marriages(marriages_dict, people_dict):
@@ -130,7 +142,9 @@ def print_marriages(marriages_dict, people_dict):
             person_key: [name, gender, birth_year, death_year]
     Return: nothing
     """
-    pass
+    for marriages in marriages_dict:
+        marriage = marriages_dict[marriages]
+        
 
 
 # If this file was executed like this:
