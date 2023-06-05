@@ -1,10 +1,18 @@
 def main():
-    pass
+    chemical_formula = input("Enter the chemical formula for the molecule: ")
+
+    chemical_mass = float(input("Enter the mass of the chemical sample in grams: "))
+
+    periodic_table = make_periodic_table()
+
+    for element in periodic_table:
+        symbol, name, atomic_mass = element
+        print(f"{name}: {atomic_mass}")
 
 
 
 
-def make_periodic_list():
+def make_periodic_table():
     periodic_table_list = [
     ["Ac", "Actinium", 227],
     ["Ag", "Silver", 107.8682],
@@ -102,3 +110,7 @@ def make_periodic_list():
     ["Zr", "Zirconium", 91.224]
     ]
     return periodic_table_list
+
+
+if __name__ == "__main__":
+    main()
