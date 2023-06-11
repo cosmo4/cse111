@@ -142,8 +142,20 @@ def print_marriages(marriages_dict, people_dict):
             person_key: [name, gender, birth_year, death_year]
     Return: nothing
     """
-    for marriages in marriages_dict:
-        marriage = marriages_dict[marriages]
+    for marriage_data in marriages_dict.values():
+        husband_key, wife_key, wedding_year = marriage_data
+
+        husband_data = people_dict[husband_key]
+        husband_name = husband_data[NAME_INDEX]
+        husband_birth_year = husband_data[BIRTH_YEAR_INDEX]
+        husband_age_at_wedding = wedding_year - husband_birth_year
+
+        wife_data = people_dict[wife_key]
+        wife_name = wife_data[NAME_INDEX]
+        wife_birth_year = wife_data[BIRTH_YEAR_INDEX]
+        wife_age_at_wedding = wedding_year - wife_birth_year
+
+        print(f"{husband_name} {husband_age_at_wedding} - {wedding_year} - {wife_name} {wife_age_at_wedding}")
         
 
 
