@@ -1,15 +1,30 @@
 import csv
 import re
 
+
 def main():
     I_NUMBER_INDEX = 0
-    STUDENT_INDEX = 1
+    
 
     students_dict = read_dictionary("students.csv", I_NUMBER_INDEX)
 
-    print(students_dict)
-
     valid_student_number = get_valid_id()
+
+    find_student(valid_student_number, students_dict)
+
+
+def find_student(i_number, dict):
+    STUDENT_INDEX = 1
+    if i_number not in dict:
+        print("No such student")
+    else:
+        # Retrieve the student name that corresponds
+        # to the I-Number that the user entered.
+        value = dict[i_number]
+        name = value[STUDENT_INDEX]
+
+        # Print the student name.
+        print(name)
 
 
 def read_dictionary(filename, key_column_index):
@@ -28,7 +43,7 @@ def read_dictionary(filename, key_column_index):
 
     # open csv file and store it as variable 'file'
     with open(filename, 'rt') as file:
-        
+
         # csv module that creates a reader object that will read from the file
         reader = csv.reader(file)
 
@@ -37,7 +52,7 @@ def read_dictionary(filename, key_column_index):
 
         # read rows one row at a time from csv file
         for row_list in reader:
-            
+
             # if current row is not blank add data to dictionary
             if len(row_list) != 0:
 
@@ -49,16 +64,18 @@ def read_dictionary(filename, key_column_index):
         return student_dictionary
 
 # Stretch 2
+
+
 def get_valid_id():
-    # re.match("^[0-9]{1,9}$", "I NUMBER"): 
+    # re.match("^[0-9]{1,9}$", "I NUMBER"):
     # re.match("^[\d]{1,9}$", "I NUMBER"): same result as above
-    #re.sub("[-]", "", "I NUMBER")
+    # re.sub("[-]", "", "I NUMBER")
     while True:
         student_id = input('What is your I-Number? ')
         # Remove any dashes from the number
         student_id = re.sub("[-]", "", student_id)
         # Ensure only numbers are left
-        if not re.match("^[0-9]{1,9}$", ""):
+        if not re.match("^[0-9]{1,}$", student_id):
             print("Invalid I-Number")
             continue
         # Catch if I Number is too short
@@ -71,6 +88,7 @@ def get_valid_id():
             continue
         # All conditions met, return valid student I Number
         return student_id
-    
+
+
 if __name__ == "__main__":
     main()
