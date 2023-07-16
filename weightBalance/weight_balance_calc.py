@@ -1,6 +1,4 @@
 import csv
-import math
-
 
 def main():
     
@@ -13,13 +11,14 @@ def main():
             plane_selection = input('Which plane will you be flying today? (please enter the tail number): ')
                 
             # verify that the plane_selection exists
-            plane = None
+            chosen_plane = None
             for planes in plane_data:
-                if planes['Tail number'] == plane_selection:
-                    plane = planes
+                if planes['Tail number'] == plane_selection.upper():
+                    chosen_plane = planes
                     break
-
-            if plane:
+            
+            if chosen_plane:
+                plane = {key: float(value) if key != list(chosen_plane.keys())[0] else value for key, value in chosen_plane.items()}
                 # Plane weight
                 empty_weight = plane['Empty Weight']
                 # call functions for user input
@@ -43,19 +42,22 @@ def main():
                 rear_seat_moment = calc_moment(rear_seat_weight, plane['Rear Seat Arm'])
                 baggage_moment = calc_moment(baggage_weight, plane['Baggage Arm'])
 
-                # Center of Gravity calculation
+                # total values
+                total_weight = calc_totals(empty_weight, oil_weight, front_seat_weight, fuel_weight, rear_seat_weight, baggage_weight)
+                total_moment = calc_totals(empty_moment, oil_moment, front_seat_moment, fuel_moment, rear_seat_moment, baggage_moment)
 
+                # Center of Gravity calculation
+                center_of_gravity = calc_center_of_gravity(total_weight, total_moment)
 
                 print('Plane Information: ')
                 print(f"Tail Number: {plane['Tail number']}")
-                print(f"Empty Weight: {plane['Empty Weight']}")
+                print(f"Total Weight: {total_weight}")
+                print(f"The plane's center of gravity is {center_of_gravity:.1f}")
+                print(f"Please double check the limitations on the weight and balance sheet and have a safe flight!")
                 break
                 
             else:
                 print("Oops, that isn't a plane in our hanger. Please enter the tail number of one of our planes.")
-            
-
-
 
     except FileNotFoundError:
         print("ERROR! File not found.")
@@ -65,39 +67,59 @@ def main():
 def get_valid_oil():
     try:
         oil_quantity = float(input("How many quarts of oil are in the engine? "))
-        return oil_quantity
+        if oil_quantity >= 0:
+            return oil_quantity
+        else:
+            print("Invalid input. Please enter a non-negative number.")
+            return get_valid_oil()
     except ValueError:
         print("Invalid input. Please enter a number.")
         return get_valid_oil()
-    
+
 def get_valid_front_seat():
     try:
         front_passengers = float(input("What is the total weight of the front-seat passengers in pounds? "))
-        return front_passengers
+        if front_passengers >= 0:
+            return front_passengers
+        else:
+            print("Invalid input. Please enter a non-negative number.")
+            return get_valid_front_seat()
     except ValueError:
         print("Invalid input. Please enter a number.")
         return get_valid_front_seat()
-    
+
 def get_valid_fuel():
     try:
         fuel_quantity = float(input("How many total gallons of fuel are in the fuel tanks? "))
-        return fuel_quantity
+        if fuel_quantity >= 0:
+            return fuel_quantity
+        else:
+            print("Invalid input. Please enter a non-negative number.")
+            return get_valid_fuel()
     except ValueError:
         print("Invalid input. Please enter a number.")
         return get_valid_fuel()
-    
+
 def get_valid_rear_seat():
     try:
         rear_passengers = float(input("What is the total weight of the rear-seat passengers in pounds? "))
-        return rear_passengers
+        if rear_passengers >= 0:
+            return rear_passengers
+        else:
+            print("Invalid input. Please enter a non-negative number.")
+            return get_valid_rear_seat()
     except ValueError:
         print("Invalid input. Please enter a number.")
         return get_valid_rear_seat()
-    
+
 def get_valid_baggage():
     try:
         baggage = float(input("How much total baggage will be loaded in pounds? "))
-        return baggage
+        if baggage >= 0:
+            return baggage
+        else:
+            print("Invalid input. Please enter a non-negative number.")
+            return get_valid_baggage()
     except ValueError:
         print("Invalid input. Please enter a number.")
         return get_valid_baggage()
@@ -128,7 +150,7 @@ def calc_oil_weight(quantity):
         Float - the weight of oil in pounds
 
     """
-    return round(quantity * 1.8)
+    return quantity * 1.8
 
 def calc_fuel_weight(quantity):
     """
@@ -182,9 +204,8 @@ def calc_center_of_gravity(total_weight, total_moment):
     Return:
         Float - the center of gravity in inches from the datum
     """
-    cg = round((total_moment / total_weight), 2)
+    cg = total_moment / total_weight
     return cg
     
-
 if __name__ == "__main__":
     main()
