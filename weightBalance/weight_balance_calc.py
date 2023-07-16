@@ -3,7 +3,106 @@ import math
 
 
 def main():
-    pass
+    
+    print('Welcome to Idaho Flight Academy!')
+
+    try:
+        plane_data = read_aircraft_data('plane_info.csv')
+    
+        while True:
+            plane_selection = input('Which plane will you be flying today? (please enter the tail number): ')
+                
+            # verify that the plane_selection exists
+            plane = None
+            for planes in plane_data:
+                if planes['Tail number'] == plane_selection:
+                    plane = planes
+                    break
+
+            if plane:
+                # Plane weight
+                empty_weight = plane['Empty Weight']
+                # call functions for user input
+                oil_quantity = get_valid_oil()
+                front_seat_weight = get_valid_front_seat()
+                fuel_quantity = get_valid_fuel()
+                rear_seat_weight = get_valid_rear_seat()
+                baggage_weight = get_valid_baggage()
+
+                # begin calculations
+
+                # liquid calculations
+                oil_weight = calc_oil_weight(oil_quantity)
+                fuel_weight = calc_fuel_weight(fuel_quantity)
+
+                # moment calculations
+                empty_moment = plane['EW Moment']
+                oil_moment = calc_moment(oil_weight, plane['Oil Arm'])
+                front_seat_moment = calc_moment(front_seat_weight, plane['Front Seat Arm'])
+                fuel_moment = calc_moment(fuel_weight, plane['Fuel Arm'])
+                rear_seat_moment = calc_moment(rear_seat_weight, plane['Rear Seat Arm'])
+                baggage_moment = calc_moment(baggage_weight, plane['Baggage Arm'])
+
+                # Center of Gravity calculation
+
+
+                print('Plane Information: ')
+                print(f"Tail Number: {plane['Tail number']}")
+                print(f"Empty Weight: {plane['Empty Weight']}")
+                break
+                
+            else:
+                print("Oops, that isn't a plane in our hanger. Please enter the tail number of one of our planes.")
+            
+
+
+
+    except FileNotFoundError:
+        print("ERROR! File not found.")
+
+# Get user input functions below here
+
+def get_valid_oil():
+    try:
+        oil_quantity = float(input("How many quarts of oil are in the engine? "))
+        return oil_quantity
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+        return get_valid_oil()
+    
+def get_valid_front_seat():
+    try:
+        front_passengers = float(input("What is the total weight of the front-seat passengers in pounds? "))
+        return front_passengers
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+        return get_valid_front_seat()
+    
+def get_valid_fuel():
+    try:
+        fuel_quantity = float(input("How many total gallons of fuel are in the fuel tanks? "))
+        return fuel_quantity
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+        return get_valid_fuel()
+    
+def get_valid_rear_seat():
+    try:
+        rear_passengers = float(input("What is the total weight of the rear-seat passengers in pounds? "))
+        return rear_passengers
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+        return get_valid_rear_seat()
+    
+def get_valid_baggage():
+    try:
+        baggage = float(input("How much total baggage will be loaded in pounds? "))
+        return baggage
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+        return get_valid_baggage()
+
+# Function to get the csv file that will be used
 
 def read_aircraft_data(filename):
     """
@@ -16,6 +115,8 @@ def read_aircraft_data(filename):
             aircraft_data.append(row)
     return aircraft_data
 
+# Calculation functions below
+
 def calc_oil_weight(quantity):
     """
     Calculates the weight of the oil in the airplane
@@ -27,7 +128,7 @@ def calc_oil_weight(quantity):
         Float - the weight of oil in pounds
 
     """
-    pass
+    return round(quantity * 1.8)
 
 def calc_fuel_weight(quantity):
     """
@@ -40,7 +141,7 @@ def calc_fuel_weight(quantity):
         Float - the weight of fuel in pounds
 
     """
-    pass
+    return quantity * 6
 
 def calc_moment(weight, arm):
     """
@@ -54,7 +155,7 @@ def calc_moment(weight, arm):
         Float - the moment of part of the airplane
 
     """
-    pass
+    return weight * arm
 
 def calc_totals(*values):
     """
@@ -81,10 +182,9 @@ def calc_center_of_gravity(total_weight, total_moment):
     Return:
         Float - the center of gravity in inches from the datum
     """
-    cg = total_moment / total_weight
+    cg = round((total_moment / total_weight), 2)
     return cg
     
 
-
-
-main()
+if __name__ == "__main__":
+    main()
